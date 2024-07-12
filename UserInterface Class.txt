@@ -1,0 +1,114 @@
+import java.util.Scanner;
+
+public class UserInterface {
+    private Database database;
+    private Scanner scanner;
+
+    public UserInterface() {
+        database = new Database();
+        scanner = new Scanner(System.in);
+    }
+
+    public void start() {
+        boolean running = true;
+
+        while (running) {
+            System.out.println("Employee Management System");
+            System.out.println("1. Add Employee");
+            System.out.println("2. View Employee");
+            System.out.println("3. Update Employee");
+            System.out.println("4. Delete Employee");
+            System.out.println("5. View All Employees");
+            System.out.println("6. Exit");
+            System.out.print("Choose an option: ");
+
+            int choice = scanner.nextInt();
+            scanner.nextLine(); // Consume newline
+
+            switch (choice) {
+                case 1:
+                    addEmployee();
+                    break;
+                case 2:
+                    viewEmployee();
+                    break;
+                case 3:
+                    updateEmployee();
+                    break;
+                case 4:
+                    deleteEmployee();
+                    break;
+                case 5:
+                    viewAllEmployees();
+                    break;
+                case 6:
+                    running = false;
+                    break;
+                default:
+                    System.out.println("Invalid choice.");
+            }
+        }
+    }
+
+    private void addEmployee() {
+        System.out.print("Enter ID: ");
+        int id = scanner.nextInt();
+        scanner.nextLine(); // Consume newline
+        System.out.print("Enter name: ");
+        String name = scanner.nextLine();
+        System.out.print("Enter department: ");
+        String department = scanner.nextLine();
+        System.out.print("Enter salary: ");
+        double salary = scanner.nextDouble();
+
+        Employee employee = new Employee(id, name, department, salary);
+        database.addEmployee(employee);
+        System.out.println("Employee added.");
+    }
+
+    private void viewEmployee() {
+        System.out.print("Enter employee ID: ");
+        int id = scanner.nextInt();
+        Employee employee = database.getEmployee(id);
+
+        if (employee != null) {
+            System.out.println(employee);
+        } else {
+            System.out.println("Employee not found.");
+        }
+    }
+
+    private void updateEmployee() {
+        System.out.print("Enter employee ID: ");
+        int id = scanner.nextInt();
+        scanner.nextLine(); // Consume newline
+        System.out.print("Enter new name: ");
+        String name = scanner.nextLine();
+        System.out.print("Enter new department: ");
+        String department = scanner.nextLine();
+        System.out.print("Enter new salary: ");
+        double salary = scanner.nextDouble();
+
+        Employee employee = new Employee(id, name, department, salary);
+        database.updateEmployee(employee);
+        System.out.println("Employee updated.");
+    }
+
+    private void deleteEmployee() {
+        System.out.print("Enter employee ID: ");
+        int id = scanner.nextInt();
+        database.deleteEmployee(id);
+        System.out.println("Employee deleted.");
+    }
+
+    private void viewAllEmployees() {
+        for (Employee employee : database.getAllEmployees().values()) {
+            System.out.println(employee);
+        }
+    }
+
+    public static void main(String[] args) {
+        UserInterface ui = new UserInterface();
+        ui.start();
+    }
+}
